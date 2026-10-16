@@ -8,7 +8,10 @@ import {
 } from "react-router";
 
 import type { Route } from "./+types/root";
+// import type { AuthState } from "../type.d";
+import { useState } from "react";
 import "./app.css";
+import { getCurrentUser } from "../lib/puter.action";
 
 export const links: Route.LinksFunction = () => [
   { rel: "preconnect", href: "https://fonts.googleapis.com" },
@@ -41,7 +44,34 @@ export function Layout({ children }: { children: React.ReactNode }) {
   );
 }
 
+const DEFAULT_AUTH_STATE: AuthState = {
+  isSignedIn: false,
+  userName: null,
+  userId: null,
+};
+
 export default function App() {
+  const [authState, setAuthState] = useState<AuthState>(DEFAULT_AUTH_STATE);
+
+  const refreshAuth = async () => {
+    try {
+      const user = await getCurrentUser();
+
+      setAuthState(
+        user
+          ? {
+              isSignedIn: true,
+              userName: user.username,
+              userId: user.uuid,
+            }
+          : DEFAULT_AUTH_STATE,
+      );
+    } catch {
+      setAuthState(DEFAULT_AUTH_STATE);
+      return false;
+    }
+  };
+
   return <Outlet />;
 }
 
