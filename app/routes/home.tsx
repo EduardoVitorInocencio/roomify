@@ -1,4 +1,4 @@
-import { ArrowRight } from "lucide-react";
+import { ArrowRight, Clock } from "lucide-react";
 import NavBar from "../../components/NavBar";
 import type { Route } from "./+types/home";
 import Button from "../../components/ui/Button";
@@ -55,8 +55,26 @@ export default function Home() {
             <div className="project-card group">
               <div className="preview">
                 <img 
-                  src="https://puter.com/?shared=%2Fcalm_mountain_854167%2Facd6bec0-bb6f-49dc-b381-248227123aba%2FScreenshot%202025-10-22%20212249.png" alt="" 
+                  src="https://roomify-mlhuk267-dfwu1i.puter.site/projects/1770803585402/rendered.png" alt="project" 
                 />
+
+                <div className="badge">
+                  <span>Community</span>
+                </div>
+              </div>
+
+              <div className="card-body">
+                <div>
+                  <h3>Modern Living Room</h3>
+                  <div className="meta">
+                    <Clock size={12} />
+                    <span>{new Date().toLocaleDateString()}</span>
+                    <span>by Eduardo Inocencio</span>
+                  </div>
+                </div>
+                  <div className="arrow">
+                    <ArrowRight size={18} />
+                  </div>
               </div>
             </div>
           </div>
