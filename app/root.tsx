@@ -9,9 +9,13 @@ import {
 
 import type { Route } from "./+types/root";
 // import type { AuthState } from "../type.d";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import "./app.css";
-import { getCurrentUser } from "../lib/puter.action";
+import { 
+  getCurrentUser,
+  signIn as putterSignIn,
+  signOut as putterSignOut
+} from "../lib/puter.action";
 
 export const links: Route.LinksFunction = () => [
   { rel: "preconnect", href: "https://fonts.googleapis.com" },
@@ -72,7 +76,41 @@ export default function App() {
     }
   };
 
-  return <Outlet />;
+  useEffect(() => {
+    refreshAuth();
+  }, []);
+
+  const signIn = async () => {
+    // Implement sign-in logic here
+    // For example, you might call an API to authenticate the user
+    // After successful sign-in, refresh the auth state
+    await putterSignIn();
+    return await refreshAuth();
+  };
+
+  const signOut = async () => {
+    // Implement sign-out logic here
+    // For example, you might call an API to invalidate the user's session
+    // After successful sign-out, refresh the auth state
+    await putterSignOut();
+    return await refreshAuth();
+  };
+
+  return(
+
+    <main className="min-h-screen bg-background text-foreground relative z-10 ">
+      <Outlet 
+        context={{
+          ...authState,
+          refreshAuth,
+          signIn,
+          signOut,
+        }}
+      />;
+    </main>
+
+  ) 
+  
 }
 
 export function ErrorBoundary({ error }: Route.ErrorBoundaryProps) {
